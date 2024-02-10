@@ -19,7 +19,7 @@ return new class extends Migration
             //status_id 0=deactivated 1=activated
             $table->smallInteger('status_id')->default(0);
             //company_code S=SDCI, A=Ares Merchants, G=guest
-            $table->char('company_code')->nullable();
+            $table->string('company_code')->nullable();
             //user_type 0=guest, 1=admin, 2=sdci, 3=ares merchants
             $table->smallInteger('user_type')->default(0);
             $table->timestamp('email_verified_at')->nullable();
