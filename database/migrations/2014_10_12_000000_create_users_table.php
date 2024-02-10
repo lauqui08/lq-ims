@@ -15,6 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('avatar')->nullable();
+            //status_id 0=deactivated 1=activated
+            $table->int('status_id')->default(0);
+            //company_code S=SDCI, A=Ares Merchants, G=guest
+            $table->char('company_code')->nullable();
+            //user_type 0=guest, 1=admin, 2=sdci, 3=ares merchants
+            $table->int('user_type')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
