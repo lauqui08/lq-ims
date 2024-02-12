@@ -13,7 +13,8 @@ class BuyerController extends Controller
      */
     public function index()
     {
-        //
+        return view('buyer.index',['buyers'=>Buyer::orderBy('created_at','desc')
+        ->paginate(5)]);
     }
 
     /**
@@ -29,7 +30,8 @@ class BuyerController extends Controller
      */
     public function store(StoreBuyerRequest $request)
     {
-        //
+        Buyer::create($request->all());
+        return redirect(route('buyers.index'));
     }
 
     /**
@@ -37,7 +39,7 @@ class BuyerController extends Controller
      */
     public function show(Buyer $buyer)
     {
-        //
+        return view('buyer.show',compact('buyer'));
     }
 
     /**
@@ -45,7 +47,7 @@ class BuyerController extends Controller
      */
     public function edit(Buyer $buyer)
     {
-        //
+        return view('buyer.edit',compact('buyer'));
     }
 
     /**
@@ -53,7 +55,15 @@ class BuyerController extends Controller
      */
     public function update(UpdateBuyerRequest $request, Buyer $buyer)
     {
-        //
+        $buyer->code_name = $request->code_name;
+        $buyer->name = $request->name;
+        $buyer->address = $request->address;
+
+        if($buyer->isDirty()){
+            $buyer->save();
+            return redirect(route('buyers.index'));
+        }
+        return redirect(route('buyers.edit',$buyer->id));
     }
 
     /**
@@ -61,6 +71,7 @@ class BuyerController extends Controller
      */
     public function destroy(Buyer $buyer)
     {
-        //
+       $buyer->delete();
+       return redirect(route('buyers.index'));
     }
 }

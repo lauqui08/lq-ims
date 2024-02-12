@@ -11,7 +11,7 @@ class StoreBuyerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreBuyerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'code_name'=>['required','max:255','unique:buyers'],
+            'name'=>['required','max:255'],
+            'address'=>['required']
         ];
     }
 }
