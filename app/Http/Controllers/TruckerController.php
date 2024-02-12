@@ -13,7 +13,11 @@ class TruckerController extends Controller
      */
     public function index()
     {
-        //
+        return view('trucker.index',[
+            'truckers'=>Trucker::orderBy('created_at','desc')
+                ->paginate(5)
+            ]
+        );
     }
 
     /**
@@ -29,7 +33,9 @@ class TruckerController extends Controller
      */
     public function store(StoreTruckerRequest $request)
     {
-        //
+        Trucker::create($request->all());
+
+        return redirect(route('truckers.index'));
     }
 
     /**
@@ -37,7 +43,7 @@ class TruckerController extends Controller
      */
     public function show(Trucker $trucker)
     {
-        //
+        return view('trucker.show',compact('trucker'));
     }
 
     /**
@@ -45,7 +51,7 @@ class TruckerController extends Controller
      */
     public function edit(Trucker $trucker)
     {
-        //
+        return view('trucker.edit',compact('trucker'));
     }
 
     /**
@@ -53,7 +59,18 @@ class TruckerController extends Controller
      */
     public function update(UpdateTruckerRequest $request, Trucker $trucker)
     {
-        //
+
+        $trucker->name = $request->name;
+        $trucker->address = $request->address;
+
+        if($trucker->isDirty()){
+            $trucker->save();
+            return redirect(route('truckers.show',$trucker->id));
+        }
+
+        return redirect(route('truckers.edit',$trucker->id));
+//        $trucker->update($request->all(['name','address']));
+//            return redirect(route('truckers.show',$trucker->id));
     }
 
     /**
@@ -61,6 +78,7 @@ class TruckerController extends Controller
      */
     public function destroy(Trucker $trucker)
     {
-        //
+        $trucker->delete();
+        return redirect(route('trucker.index'));
     }
 }
